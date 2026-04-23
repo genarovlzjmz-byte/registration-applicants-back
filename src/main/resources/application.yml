@@ -1,0 +1,76 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://[::1]:5432/siani
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: siani
+        format_sql: true
+    open-in-view: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: America/Mexico_City
+
+  # ==================== EMAIL (SMTP) ====================
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:tu-email@gmail.com}
+    password: ${MAIL_PASSWORD:tu-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+# SpringDoc OpenAPI (Swagger)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+# JWT
+app:
+  jwt:
+    secret: ${JWT_SECRET:cHaNgInGoUnIvErSiDaDaUtOnOmAcHaPiNgOsEcReTkEy2026SiAnI}
+    expiration-ms: 86400000  # 24 horas
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+logging:
+  level:
+    mx.edu.chapingo: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+
+# ==================== OTP CONFIG ====================
+quimios:
+  otp:
+    expiration-minutes: ${OTP_EXPIRATION_MINUTES:5}
+    max-intentos: ${OTP_MAX_INTENTOS:5}
+  app:
+    name: ${APP_NAME:SIANI}
+
